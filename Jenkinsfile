@@ -58,7 +58,7 @@ stages {
                 cd ..
                 helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace dev
                 cd /home/ubuntu/examen/cast/cast-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace dev
                 cd /home/ubuntu/examen/nginx/
@@ -82,11 +82,11 @@ stages {
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 cd /home/ubuntu/examen/movie/movie-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace qa
                 cd /home/ubuntu/examen/cast/cast-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace qa
                 cd /home/ubuntu/examen/nginx/
@@ -110,11 +110,11 @@ stages {
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 cd /home/ubuntu/examen/movie/movie-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace staging
                 cd /home/ubuntu/examen/cast/cast-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace staging
                 cd /home/ubuntu/examen/nginx/
@@ -147,11 +147,11 @@ stages {
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 cd /home/ubuntu/examen/movie/movie-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace prod
                 cd /home/ubuntu/examen/cast/cast-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace prod
                 cd /home/ubuntu/examen/nginx/
