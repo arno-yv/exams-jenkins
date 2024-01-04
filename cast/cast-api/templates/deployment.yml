@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-cast-service-deploy
+  labels:
+    app: {{ .Release.Name }}-cast-service
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-cast-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-cast-service
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-cast-service
+          image: {{ .Values.cast.deployment.image }}
+          imagePullPolicy: {{ .Values.cast.deployment.imagePullPolicy }}
+          tag: {{ .Values.cast.deployment.tag }}
+          command: ["/bin/bash", "-c"]
+          args: ["sleep 10; uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"]
+          ports:
+            - containerPort: {{ .Values.cast.service.port }}
+          env:
+            - name: DATABASE_URI
+              value: postgresql://cast_db_username:cast_db_password@cast-db/cast_db_dev
+          volumeMounts:
+          - mountPath: /app
+            name: app-volume
+      volumes:
+      - name: app-volume
+        hostPath: 
+          path: /home/ubuntu/examen/cast/cast-service
+      
+                

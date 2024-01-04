@@ -1,0 +1,9 @@
+nginx:
+  deployment:
+    image: nginx:latest
+    imagePullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8080
+    targetPort: 8080
+    nodePort: 30002

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: {{ .Release.Name }}-movie-db-deploy
+ labels:
+    app: {{ .Release.Name }}-movie-db
+spec:
+ selector:
+   matchLabels:
+     app: {{ .Release.Name }}-movie-db
+ template:
+   metadata:
+     labels:
+       app: {{ .Release.Name }}-movie-db
+   spec:
+     containers:
+     - name: {{ .Release.Name }}-movie-db
+       image: {{ .Values.movie.statefulset.image }}
+       imagePullPolicy: {{ .Values.movie.statefulset.imagePullPolicy }}
+       volumeMounts:
+         - name: movie-db-volume 
+           mountPath: /var/lib/postgresql/data/
+       ports:
+       - containerPort: {{ .Values.movie.service_db.port }}
+         name: pgsql
+       env:
+       - name: POSTGRES_PASSWORD
+         value: movie_db_password
+       - name: POSTGRES_USER
+         value: movie_db_username
+       - name: POSTGRES_DB
+         value: movie_db_dev
+     volumes:
+      - name: movie-db-volume 
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pvc-moviedb

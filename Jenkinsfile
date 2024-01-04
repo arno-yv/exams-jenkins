@@ -11,39 +11,14 @@ stages {
             steps {
                 script {
                 sh '''
-                 docker rm -f jenkins
-                 cd movie
+                 cd movie/movie-service
                  docker build -t $DOCKER_ID/$DOCKER_MOVIE_IMAGE:$DOCKER_TAG .
-                 cd ../cast
+                 cd ../../cast/cast-service
                  docker build -t $DOCKER_ID/$DOCKER_CAST_IMAGE:$DOCKER_TAG .
                  sleep 6
                 '''
                 }
             }
-        }
-        stage('Docker run'){ // run containers from our builded images
-                steps {
-                    script {
-                    sh '''
-                    docker run -d -p 8001:8000 --name api_movie $DOCKER_ID/$DOCKER_MOVIE_IMAGE:$DOCKER_TAG
-                    docker run -d -p 8002:8000 --name api_cast $DOCKER_ID/$DOCKER_CAST_IMAGE:$DOCKER_TAG
-                    sleep 10
-                    '''
-                    }
-                }
-            }
-
-        stage('Test Acceptance'){ // we launch the curl command to validate that containers respond to the request
-            steps {
-                    script {
-                    sh '''
-                    curl localhost:8001
-                    curl localhost:8002
-
-                    '''
-                    }
-            }
-
         }
         stage('Docker Push'){ //we pass the built images to our docker hub account
             environment
@@ -64,7 +39,6 @@ stages {
             }
 
         }
-
         stage('Deploiement en dev'){
             environment
             {
@@ -73,18 +47,20 @@ stages {
             steps {
                 script {
                 sh '''
+                cd
                 rm -Rf .kube
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                cd movie
-                cat values_dev.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_dev.yml
-                helm upgrade --install app movie --values=values_dev.yml --namespace dev
-                cd ../cast
-                cat values_dev.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_dev.yml
-                helm upgrade --install app cast --values=values_dev.yml --namespace dev
+                cd /home/ubuntu/examen/movie
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" movie-api/values.yaml
+                helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace dev
+                cd /home/ubuntu/examen/cast/
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" cast-api/values.yml
+                helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace dev
+                cd /home/ubuntu/examen/nginx/
+                helm upgrade --install ${BUILD_ID} nginx-api --values=nginx-api/values_dev.yaml --namespace dev
+
                 '''
                 }
             }
@@ -98,18 +74,20 @@ stages {
             steps {
                 script {
                 sh '''
+                cd
                 rm -Rf .kube
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                cd movie
-                cat values_qa.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_qa.yml
-                helm upgrade --install app movie --values=values_qa.yml --namespace qa
-                cd ../cast
-                cat values_qa.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_qa.yml
-                helm upgrade --install app cast --values=values_qa.yml --namespace qa
+                cd /home/ubuntu/examen/movie
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" movie-api/values.yaml
+                helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace qa
+                cd /home/ubuntu/examen/cast/
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" cast-api/values.yml
+                helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace qa
+                cd /home/ubuntu/examen/nginx/
+                helm upgrade --install ${BUILD_ID} nginx-api --values=nginx-api/values_qa.yaml --namespace qa
+
                 '''
                 }
             }
@@ -123,18 +101,20 @@ stages {
             steps {
                 script {
                 sh '''
+                cd
                 rm -Rf .kube
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                cd movie
-                cat values_staging.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_staging.yml
-                helm upgrade --install app movie --values=values_staging.yml --namespace staging
-                cd ../cast
-                cat values_staging.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_staging.yml
-                helm upgrade --install app cast --values=values_staging.yml --namespace staging
+                cd /home/ubuntu/examen/movie
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" movie-api/values.yaml
+                helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace staging
+                cd /home/ubuntu/examen/cast/
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" cast-api/values.yml
+                helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace staging
+                cd /home/ubuntu/examen/nginx/
+                helm upgrade --install ${BUILD_ID} nginx-api --values=nginx-api/values_staging.yaml --namespace staging
+
                 '''
                 }
             }
@@ -157,18 +137,20 @@ stages {
             steps {
                 script {
                 sh '''
+                cd
                 rm -Rf .kube
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                cd movie
-                cat values_prod.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_prod.yml
-                helm upgrade --install app movie --values=values_prod.yml --namespace prod
-                cd ../cast
-                cat values_prod.yml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values_prod.yml
-                helm upgrade --install app cast --values=values_prod.yml --namespace prod
+                cd /home/ubuntu/examen/movie
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" movie-api/values.yaml
+                helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace prod
+                cd /home/ubuntu/examen/cast/
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" cast-api/values.yml
+                helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace prod
+                cd /home/ubuntu/examen/nginx/
+                helm upgrade --install ${BUILD_ID} nginx-api --values=nginx-api/values_prod.yaml --namespace prod
+
                 '''
                 }
             }

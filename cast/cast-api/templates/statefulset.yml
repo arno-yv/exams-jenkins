@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: {{ .Release.Name }}-cast-db-deploy
+ labels:
+    app: {{ .Release.Name }}-cast-db
+spec:
+ selector:
+   matchLabels:
+     app: {{ .Release.Name }}-cast-db
+ template:
+   metadata:
+     labels:
+       app: {{ .Release.Name }}-cast-db
+   spec:
+     containers:
+     - name: {{ .Release.Name }}-cast-db
+       image: {{ .Values.cast.statefulset.image }}
+       imagePullPolicy: {{ .Values.cast.statefulset.imagePullPolicy }}
+       volumeMounts:
+         - name: cast-db-volume 
+           mountPath: /var/lib/postgresql/data/
+       ports:
+       - containerPort: {{ .Values.cast.service_db.port }}
+         name: pgsql
+       env:
+       - name: POSTGRES_PASSWORD
+         value: cast_db_password
+       - name: POSTGRES_USER
+         value: cast_db_username
+       - name: POSTGRES_DB
+         value: cast_db_dev
+     volumes:
+      - name: cast-db-volume 
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pvc-castdb

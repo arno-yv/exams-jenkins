@@ -1,0 +1,20 @@
+cast:
+  deployment:
+    image: arnoyv/cast-api
+    imagePullPolicy: IfNotPresent
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 8000
+    targetPort: 8000
+  statefulset:
+    image: postgres:12.1-alpine
+    imagePullPolicy: IfNotPresent
+  service_db:
+    type: ClusterIP
+    port: 5432
+    targetPort: 5432
+  pvc:
+    accessMode: ReadWriteOnce
+    storage: 10Gi
+    storageClassName: local-path
