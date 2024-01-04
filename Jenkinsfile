@@ -53,7 +53,7 @@ stages {
                 ls
                 cat $KUBECONFIG > .kube/config
                 cd /home/ubuntu/examen/movie/movie-api
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                sed -i -e "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
                 helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace dev
                 cd /home/ubuntu/examen/cast/cast-api
