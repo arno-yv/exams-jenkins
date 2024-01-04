@@ -52,7 +52,7 @@ stages {
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 cd /home/ubuntu/examen/movie/movie-api
-                sh 'printenv'
+                printenv
                 cat values.yaml
                 sudo sed -i -e "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
