@@ -2,7 +2,7 @@ cast:
   deployment:
     image: arnoyv/cast-api
     imagePullPolicy: IfNotPresent
-    tag: v.13.0
+    tag: v.14.0
   service:
     type: ClusterIP
     port: 8000

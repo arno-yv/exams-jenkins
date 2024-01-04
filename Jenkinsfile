@@ -52,7 +52,7 @@ stages {
                 mkdir .kube
                 cat $KUBECONFIG > .kube/config
                 cd /home/ubuntu/examen/movie/movie-api
-                whoami
+                sh 'printenv'
                 cat values.yaml
                 sudo sed -i -e "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
@@ -134,10 +134,6 @@ stages {
             input{
                 message 'Do you want to deploy in production ?'
                 ok 'yes'
-            }
-            // deploy only is the branch is master
-            when {
-                branch 'master'
             }
             steps {
                 script {
