@@ -56,13 +56,13 @@ stages {
                 cat values.yaml
                 sudo sed -i -e "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-movie movie-api --values=movie-api/values.yaml --namespace dev
+                helm upgrade --install h1 movie-api --values=movie-api/values.yaml --namespace dev
                 cd /home/ubuntu/examen/cast/cast-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-cast cast-api --values=cast-api/values.yaml --namespace dev
+                helm upgrade --install h2 cast-api --values=cast-api/values.yaml --namespace dev
                 cd /home/ubuntu/examen/nginx/
-                helm upgrade --install ${BUILD_ID}-nginx nginx-api --values=nginx-api/values_dev.yaml --namespace dev
+                helm upgrade --install h3 nginx-api --values=nginx-api/values_dev.yaml --namespace dev
 
                 '''
                 }
@@ -84,13 +84,13 @@ stages {
                 cd /home/ubuntu/examen/movie/movie-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-movie movie-api --values=movie-api/values.yaml --namespace qa
+                helm upgrade --install h1 movie-api --values=movie-api/values.yaml --namespace qa
                 cd /home/ubuntu/examen/cast/cast-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-cast cast-api --values=cast-api/values.yaml --namespace qa
+                helm upgrade --install h2 cast-api --values=cast-api/values.yaml --namespace qa
                 cd /home/ubuntu/examen/nginx/
-                helm upgrade --install ${BUILD_ID}-nginx nginx-api --values=nginx-api/values_qa.yaml --namespace qa
+                helm upgrade --install h3 nginx-api --values=nginx-api/values_qa.yaml --namespace qa
 
                 '''
                 }
@@ -112,13 +112,13 @@ stages {
                 cd /home/ubuntu/examen/movie/movie-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-movie movie-api --values=movie-api/values.yaml --namespace staging
+                helm upgrade --install h1 movie-api --values=movie-api/values.yaml --namespace staging
                 cd /home/ubuntu/examen/cast/cast-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-cast cast-api --values=cast-api/values.yaml --namespace staging
+                helm upgrade --install h2 cast-api --values=cast-api/values.yaml --namespace staging
                 cd /home/ubuntu/examen/nginx/
-                helm upgrade --install ${BUILD_ID}-nginx nginx-api --values=nginx-api/values_staging.yaml --namespace staging
+                helm upgrade --install h3 nginx-api --values=nginx-api/values_staging.yaml --namespace staging
 
                 '''
                 }
@@ -148,13 +148,13 @@ stages {
                 cd /home/ubuntu/examen/movie/movie-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-movie movie-api --values=movie-api/values.yaml --namespace prod
+                helm upgrade --install h1 movie-api --values=movie-api/values.yaml --namespace prod
                 cd /home/ubuntu/examen/cast/cast-api
                 sudo sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
                 cd ..
-                helm upgrade --install ${BUILD_ID}-cast cast-api --values=cast-api/values.yaml --namespace prod
+                helm upgrade --install h2 cast-api --values=cast-api/values.yaml --namespace prod
                 cd /home/ubuntu/examen/nginx/
-                helm upgrade --install ${BUILD_ID}-nginx nginx-api --values=nginx-api/values_prod.yaml --namespace prod
+                helm upgrade --install h3 nginx-api --values=nginx-api/values_prod.yaml --namespace prod
 
                 '''
                 }

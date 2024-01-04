@@ -2,7 +2,7 @@ movie:
   deployment:
     image: arnoyv/movie-api
     imagePullPolicy: IfNotPresent
-    tag: v.16.0
+    tag: v.17.0
   service:
     type: ClusterIP
     port: 8000
