@@ -79,12 +79,13 @@ stages {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                cd /home/ubuntu/examen/movie
-                cat movie-api/values.yaml
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" movie-api/values.yaml
+                cd /home/ubuntu/examen/movie/movie-api
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                cd ..
                 helm upgrade --install ${BUILD_ID} movie-api --values=movie-api/values.yaml --namespace qa
-                cd /home/ubuntu/examen/cast/
-                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" cast-api/values.yaml
+                cd /home/ubuntu/examen/cast/cast-api
+                sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yaml
+                cd ..
                 helm upgrade --install ${BUILD_ID} cast-api --values=cast-api/values.yaml --namespace qa
                 cd /home/ubuntu/examen/nginx/
                 helm upgrade --install ${BUILD_ID} nginx-api --values=nginx-api/values_qa.yaml --namespace qa
