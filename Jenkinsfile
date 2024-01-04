@@ -135,6 +135,9 @@ stages {
                 message 'Do you want to deploy in production ?'
                 ok 'yes'
             }
+            when {
+                expression {env.GIT_BRANCH == 'origin/master'}
+            }
             steps {
                 script {
                 sh '''
